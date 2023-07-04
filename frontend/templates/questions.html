@@ -1,0 +1,234 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<section class="heading-page header-text" >
+  <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+            <!-- <menu>        </menu> -->
+                <h2>Teacher's Page</h2>
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="exam-us" id="exam">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 align-self-center">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <form id="exam" action="{% url 'questions' %}" method="post" enctype="multipart/form-data">
+                              {% csrf_token %}  
+                              <div class="row">
+                                    <div class="col-lg-12">
+                                        <h2>Menu</h2>
+                                    </div>
+                                    <section class="meetings-page" id="meetings">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="filters">
+                                                                <ul>
+                                                                <li onclick="location.href='teacher'">Categories</li>
+                                                                <li onclick="location.href='courses'">Courses</li>
+                                                                <li onclick="location.href='exams'" >Exams</li>
+                                                                <li onclick="location.href='questions'" class="active">Questions</li>
+                                                                </ul>
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </form>
+                        </div>
+                                <!-- lg9 start-->
+                
+
+
+                                <div class="col-lg-9">
+                                  <form id="exam" action="{% url 'questions' %}" method="post" enctype="multipart/form-data">
+                                  {% csrf_token %}
+                                    <section class="meetings-page" id="meetings">
+                                      <div class="container" >
+                                        <div class="row">
+                                          <div class="col-lg-12">
+                                            <div class="row">
+                                              <div class="col-lg-12">
+                                              <!-- content-start -->
+                                              <div class="col-lg-12">
+                                                  <div class="col-lg-12">
+                                                    <h2>Questions <div class="col-lg-12">
+                                                
+                                                      <button type="button"  class="button" onclick="location.href='#popup-box';" >
+                                                        Create New Question
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal col-lg-12" id="popup-box">
+                                                      <div class="content">
+                                                          
+                                                        <!-- start -->
+                                                        <div class="col-lg-12" >
+                                                          <form id="exam" action="" method="post">
+                                                            <div class="row">
+                                                              <div class="col-lg-12">
+                                                                <h2>Create Question</h2>
+                                                              </div>
+                                                      
+                                                              <div class="col-lg-4">
+                                                                <select class="form-select" aria-label="Select Course"
+                                                                                name="exam">
+                                                                                <option selected>Select Exam*</option>
+                                                                                {% for item in exam %}
+                                                                                <option value="{{item.id}}">{{item.exam_name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="name" type="text" class="form-control" id="name" placeholder="Question Name" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <textarea name="question" type="text" class="form-control" id="message" placeholder=" You can type your Question text in the text area provided below. You can also format your Question text - i.e.- format the text 'bold/italic/underline'." required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="option1" type="text" class="form-control" id="message" placeholder="Option 1" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="option2" type="text" class="form-control" id="message" placeholder="Option 2" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="option3" type="text" class="form-control" id="message" placeholder="Option 3" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="option4" type="text" class="form-control" id="message" placeholder="Option 4" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <input name="answer" type="text" class="form-control" id="message" placeholder="Correct Option" required=""></textarea>
+                                                                </fieldset>
+                                                              </div>
+                                                              <div class="col-lg-12">
+                                                                <fieldset>
+                                                                  <button type="submit" id="form-submit" class="button">Create Question</button>
+                                                                </fieldset>
+                                                              </div>
+                                                            </div>
+                                                          </form>
+                                                        </div>
+                                                
+                                                        <!-- end -->
+                                                
+                                                
+                                                          <!-- close button -->
+                                                          <a href="#"
+                                                             class="box-close">
+                                                              ×
+                                                          </a>
+                                                           <!-- close button -->
+                                                
+                                                      </div>
+                                                  </div>
+                                                  </h2>
+                                                  <!-- content start -->
+                                                  <section class="meetings-page" id="meetings" >
+                                                    <div class="container" >
+                                                    <div class="row">
+                                                        <div class="col-lg-12" style="overflow-y: auto; overflow-x: auto; height: 800px !important;">
+                                                        <div class="row" >
+                                                  <table class="styled-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Question_ID</th>
+                                                            <th>Question_Name</th>
+                                                            <th>Question_Text</th>
+                                                            <th>Option_1</th>
+                                                            <th>Option_2</th>
+                                                            <th>Option_3</th>
+                                                            <th>Option_4</th>
+                                                            <th>Correct_Answer</th>
+                                                            <th>Examination_Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      {% for item in data %}
+                                                        <tr class="active-row">
+                                                          <td>{{item.id}}</td>
+                                                          <td><a href="{% url 'question_detail' question_id=item.id %}" style="color: #870000;">{{ item.question_name }}</a></td>
+                                                          <td>{{item.question_text}}</td>
+                                                          <td>{{item.option1}}</td>
+                                                          <td>{{item.option2}}</td>
+                                                          <td>{{item.option3}}</td>
+                                                          <td>{{item.option4}}</td>
+                                                          <td>{{item.correct_answer}}</td> 
+                                                          <td>{{item.question_exam }}</td>
+                                                        </tr>
+                                                        <!-- and so on... -->
+                                                      {% endfor %}
+                                                      </tbody>
+                                                </table>
+                                                </div></div></div></div></section>
+
+
+
+
+
+                                                
+                                                  <!-- content end -->
+                                                  </div>
+                                                </div>
+                                  
+                                  
+                                  
+                                                  
+                                  
+                                  
+                                              
+                                              <!-- content-end -->
+                                  
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </section>
+                                  </form>
+                                  </div>
+
+                              
+
+
+
+
+
+
+                                 <!-- lg9 end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+
+
+
