@@ -88,29 +88,50 @@ class Question(models.Model):
 
 
 
+class Users(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        managed = True
+        db_table = 'users'
+
 # class ExamAttempt(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
-#     # student = models.ForeignKey(User, on_delete=models.CASCADE)
-#     student = "student"
 #     score = models.IntegerField(blank=True, null=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)
+#     start_time = models.DateTimeField(auto_now_add=True)
+#     end_time = models.DateTimeField(blank=True, null=True)
 
 #     def __str__(self):
-#         return f"Attempt for {self.exam.exam_name} by {self.student.username}"
+#         return f"User: {self.user.username}, Exam: {self.exam.exam_name}"
+
+#     def calculate_score(self):
+#         correct_answers = 0
+#         total_questions = self.exam.question_set.count()
+
+#         for question in self.exam.question_set.all():
+#             user_answer = self.useranswer_set.filter(question=question).first()
+#             if user_answer and user_answer.answer == question.correct_answer:
+#                 correct_answers += 1
+
+#         self.score = (correct_answers / total_questions) * 100
+#         self.save()
 
 #     class Meta:
 #         managed = True
 #         db_table = 'exam_attempt'
 
 class ExamAttempt(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session_id = models.CharField(max_length=32)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     score = models.IntegerField(blank=True, null=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return f"User: {self.user.username}, Exam: {self.exam.exam_name}"
+        return f"Session ID: {self.session_id}, Exam: {self.exam.exam_name}"
 
     def calculate_score(self):
         correct_answers = 0
@@ -128,6 +149,7 @@ class ExamAttempt(models.Model):
         managed = True
         db_table = 'exam_attempt'
 
+
 class UserAnswer(models.Model):
     exam_attempt = models.ForeignKey(ExamAttempt, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -141,3 +163,10 @@ class UserAnswer(models.Model):
         db_table = 'user_answer'
 
 
+class ExamResult(models.Model):
+    exam_attempt = models.ForeignKey(ExamAttempt, on_delete=models.CASCADE)
+    status_eye_tracking = models.BooleanField(default=False)
+    status_mobile_detection = models.BooleanField(default=False)
+    status_person_missing = models.BooleanField(default=False)
+    status_second_person = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='exam_results/', null=True, blank=True)

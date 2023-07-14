@@ -1,0 +1,20 @@
+ /* Safari syntax */
+ :-webkit-full-screen {
+    background-color: rgb(233, 233, 229);
+  }
+  
+  /* IE11 */
+  :-ms-fullscreen {
+    background-color: rgb(233, 233, 229);
+  }
+  
+  /* Standard syntax */
+  :fullscreen {
+    background-color: rgb(233, 233, 229);
+  }
+  
+  /* Style the button */
+  button {
+    padding: 20px;
+    font-size: 20px;
+  }

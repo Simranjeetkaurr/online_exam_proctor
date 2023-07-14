@@ -942,7 +942,7 @@ section.upcoming-meetings .categories ul li {
 
 section.upcoming-meetings .categories ul li a {
   font-size: 15px;
-  color: #1f272b;
+  color: #1f272b; 
   font-weight: 500;
   transition: all .3s;
 }

@@ -1,0 +1,59 @@
+
+{% load static %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+  <!-- Content of the page -->
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Vertical navigation bar -->
+      <ul class="nav flex-column">
+        {% for question in questions %}
+          <li class="nav-item">
+            <a class="nav-link question-link" href="#" data-question-id="{{ question.id }}">Question {{ question.id }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      <!-- Main content -->
+      <form method="post" id="exam-form">
+        {% csrf_token %}
+        <!-- Display the questions and answers -->
+        {% for question in questions %}
+          <div id="question_{{ question.id }}" class="question">
+            <h3>Question {{ question.id }}</h3>
+            <p>{{ question.content }}</p>
+            <!-- Display the answer options and form fields -->
+            {% for option in question.options.all %}
+              <div>
+                <input type="radio" id="question_{{ question.id }}_option_{{ option.id }}" name="question_{{ question.id }}" value="{{ option.id }}">
+                <label for="question_{{ question.id }}_option_{{ option.id }}">{{ option.content }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <!-- Submit button and other form fields -->
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.question').hide(); // Hide all questions initially
+
+      $('.question-link').click(function(e) {
+        e.preventDefault();
+        var questionId = $(this).data('question-id');
+        var questionPopup = window.open('', 'questionPopup', 'width=500,height=500');
+        var questionHtml = $('#question_' + questionId).html();
+        questionPopup.document.write('<html><head><title>Question ' + questionId + '</title></head><body>' + questionHtml + '</body></html>');
+        questionPopup.document.close();
+      });
+    });
+  </script>
+{% endblock %}

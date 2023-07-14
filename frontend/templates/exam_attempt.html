@@ -1,282 +1,84 @@
-{% extends 'navbar.html' %}
 {% load static %}
 {% load bootstrap4 %}
 {% load i18n %}
+
 {% block content %}
-<section class="heading-page header-text" >
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-      <!-- <menu>        </menu> -->
-        <h2>Question Detail</h2>
-      </div>
+  <!-- Content of the page -->
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Vertical navigation bar -->
+      <ul class="nav flex-column">
+        {% for question in questions %}
+          <li class="nav-item">
+            <a class="nav-link question-link" href="#" data-question-id="{{ question.id }}">
+              Question {{ forloop.counter }}: {{ question.question_text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      <!-- Main content -->
+      <div id="question-display"></div>
     </div>
   </div>
-</section>
 
-<section class="exam-us" id="exam">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 align-self-center">
-          <div class="row">
-            
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var questionDisplay = $('#question-display');
+      var currentQuestion = null;
 
-            <div class="col-lg-3">
-              <form id="exam" action="" method="post">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h2>Menu</h2>
-                  </div>
-                  <section class="meetings-page" id="meetings">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="filters">
-                                <ul>
-                                    <li><a onclick="window.location.href = `{% url 'teacher' %}`">Categories</a></li>
-                                    <li><a onclick="window.location.href = `{% url 'courses' %}`">Courses</a></li>
-                                    <li><a onclick="window.location.href = `{% url 'exams' %}`">Exams</a></li>
-                                    <li class="active"><a onclick="window.location.href = `{% url 'questions' %}`">Questions</a></li>
-                                </ul>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                </div>
-              </form>
-            </div>
-            <!-- lg9 start-->
-        
-                   
+      $('.question-link').click(function(e) {
+        e.preventDefault();
+        var questionId = $(this).data('question-id');
+        currentQuestion = getQuestionById(questionId);
+        displayQuestion(currentQuestion);
+      });
 
-            <div class="col-lg-9">
-              <form id="exam" method="POST" action="" enctype="multipart/form-data">
-                {% csrf_token %}
-                <section class="meetings-page" id="meetings">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="row">
-                              
-                                <!-- content-start -->
-              
-                              <div class="col-lg-12">
-                                <div class="col-lg-12">
-                                  <h2>Question Details:  <div class="col-lg-12">
-                                    
-                                      <button type="button" id="delete" class="button">
-                                        Delete
-                                      </button>
-                                      
-                                      <button type="button" id="edit" class="button" onclick="location.href='#popup-box';" >
-                                        Edit
-                                      </button>
-                                  </div>
-                                  <div class="modal col-lg-12" id="popup-box" >
-                                    <div class="content">
-                                        
-                                      <!-- start -->
-                                      <div class="col-lg-12" >
-                                        <form id="edit-question" >
-                                          <div class="row">
-                                            <div class="col-lg-12">
-                                              <h2>Edit Question</h2>
-                                            </div>
-                                            
-                                            <div class="col-lg-12">
+      function displayQuestion(question) {
+        questionDisplay.empty();
+        questionDisplay.append('<h3>Question ' + question.id + '</h3>');
+        questionDisplay.append('<p>' + question.question_text + '</p>');
 
-                                                                <fieldset>
-                                                                  <input name="name" type="text" class="form-control" id="name" placeholder="Question Name" value="{{ question.question_name }}"required="">
-                                                                </fieldset>
-                                                              </div>
-                                                              <div class="col-lg-12">
-                                                                <fieldset>
-                                                                  <textarea name="question" type="text" class="form-control" id="message" placeholder=" You can type your Question text in the text area provided below. You can also format your Question text - i.e.- format the text 'bold/italic/underline'." required="">{{ question.question_text }}</textarea>
-                                                                </fieldset>
-                                                              </div>
-                                                              <div class="col-lg-12">
-                                                                <fieldset>
-                                                                    <input name="option1" type="text" class="form-control" id="message" placeholder="Option 1" value="{{ question.option1 }}" required="">
-                                                                </fieldset>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <fieldset>
-                                                                    <input name="option2" type="text" class="form-control" id="message" placeholder="Option 2" value="{{ question.option2 }}" required="">
-                                                                </fieldset>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <fieldset>
-                                                                    <input name="option3" type="text" class="form-control" id="message" placeholder="Option 3" value="{{ question.option3 }}" required="">
-                                                                </fieldset>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <fieldset>
-                                                                    <input name="option4" type="text" class="form-control" id="message" placeholder="Option 4" value="{{ question.option4 }}" required="">
-                                                                </fieldset>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <fieldset>
-                                                                    <input name="answer" type="text" class="form-control" id="message" placeholder="Correct Option" value="{{ question.correct_answer }}" required="">
-                                                                </fieldset>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <fieldset>
-                                                                  <button type="submit" id="form-submit" class="button">Update Question</button>
-                                                                
-                                                               </fieldset>
-                                                            </div>
-                                                            </div>
-                                                          </form>
-                                                        </div>
-                                      <!-- end -->
-                              
-                              
-                                        <!-- close button -->
-                                        <a href="#"
-                                           class="box-close">
-                                            ×
-                                        </a>
-                                         <!-- close button -->
-                              
-                                    </div>
-                                </div>
-                                </h2>
-                                  <!-- content1 start -->
-                                  <section class="meetings-page" id="meetings">
-                                    <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-4">   
-                                                <div class="row grid">
-                                                    
-                                                    <div class="col-lg-4 templatemo-item-col all soon ">
-                                                        <div class="card-item">
-                                                            <div class="thumb">
-                                                                <img src="{% static 'images/question.gif' %}" alt="{{ question.question_name}}"style="width: 13rem;
-                                                                height: 19rem;">
-                                                            </div>
-                                                        </div>    
-                                                    </div>
-                                                </div> 
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <div class="row">
-                                                    <h4 style="color:#A12121;"><br><strong>Name: {{ question.question_name}}</strong></h4>
-                                                    <p1><strong>Description: </strong><em>{{ question.question_text}}</em></p1>
-                                                    <p1><br><strong>Exam ID: {{question.question_exam}}</strong></p1>
-                                                    <p1><strong>Question ID: {{ question.id}}</strong> </p1>
-                                                    <p1><strong>Option 1: </strong>{{question.option1}}</p1>
-                                                    <p1><strong>Option 2: </strong>{{question.option2}}</p1>
-                                                    <p1><strong>Option 3: </strong>{{question.option3}}</p1>
-                                                    <p1><strong>Option 4: </strong>{{question.option4}}</p1>
-                                                    <p1><strong>Correct Answer: </strong>{{question.correct_answer}}</p1>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <h2><br>Questions Under This Exam</h2>
-
-                                            
-                                            <div class="col-lg-12">
-                                                <div class="row" style="overflow-x:auto;">
-                                          <table class="styled-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Question_ID</th>
-                                                    <th>Question_Name</th>
-                                                    <th>Question_Text</th>
-                                                    <th>Option_1</th>
-                                                    <th>Option_2</th>
-                                                    <th>Option_3</th>
-                                                    <th>Option_4</th>
-                                                    <th>Correct_Answer</th>
-                                                    <th>Examination_Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                              {% for item in questions %}
-                                                <tr class="active-row">
-                                                  <td>{{item.id}}</td>
-                                                  <td><a href="{% url 'question_detail' question_id=item.id %}" style="color: #870000;">{{ item.question_name }}</a></td>
-                                                  <td>{{item.question_text}}</td>
-                                                  <td>{{item.option1}}</td>
-                                                  <td>{{item.option2}}</td>
-                                                  <td>{{item.option3}}</td>
-                                                  <td>{{item.option4}}</td>
-                                                  <td>{{item.correct_answer}}</td> 
-                                                  <td>{{item.question_exam }}</td>
-                                                </tr>
-                                                <!-- and so on... -->
-                                              {% endfor %}
-                                              </tbody>
-                                        </table>
-                                        </div></div>
-
-
-                                                </div> 
-                                                </div>
-
-
-
-
-                                        </div>
-                                    </div>
-                                    </div>
-                                </section>
-                                <!-- content1 end -->
-                                </div>
-                              </div>
-              
-                      <!-- content-end -->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  </form>
-                  </div>
-
-
-
-
-
-
-            <!-- lg9 end-->
-          </div>
-        </div>
-      </div>
-    </div>
-</section>
-
-<script>
-
-document.getElementById("delete").addEventListener("click", function() {
-  if (confirm("Are you sure you want to delete the question?")) {
-    var questionId = "{{ question.id }}";
-    var deleteUrl = "{% url 'delete_question' 0 %}".replace("0", questionId);
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", deleteUrl, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Add this line to include the CSRF token
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        // Question deleted successfully
-        location.href = "{% url 'questions' %}";
-      } else {
-        // Error occurred while deleting the question
-        alert("An error occurred while deleting the question. Please try again later.");
+        var form = $('<form method="post" action="/exam/{{ exam.id }}/attempt"></form>');
+        form.append('{% csrf_token %}');
+        for (var i = 0; i < question.options.length; i++) {
+          var option = question.options[i];
+          var optionLabel = $('<label></label>').text(option.option_text);
+          var radioInput = $('<input type="radio">').attr({
+            id: 'option_' + option.id,
+            name: 'question_' + question.id,
+            value: option.id
+          });
+          form.append($('<div></div>').append(radioInput).append(optionLabel));
+        }
+        questionDisplay.append(form);
       }
-    };
-    xhr.send();
-  }
-});
-</script>
+
+      function getQuestionById(questionId) {
+        return questions.find(function(question) {
+          return question.id === questionId;
+        });
+      }
+    });
+
+    var questions = [
+      {% for question in questions %}
+        {
+          id: {{ question.id }},
+          question_text: "{{ question.question_text }}",
+          options: [
+            {% for option in question.options.all %}
+              {
+                id: {{ option.id }},
+                option_text: "{{ option.option_text }}"
+              },
+            {% endfor %}
+          ]
+        },
+      {% endfor %}
+    ];
+  </script>
 {% endblock %}

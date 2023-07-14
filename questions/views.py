@@ -1,6 +1,8 @@
 from .models import *
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.sessions.models import Session
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 
 
@@ -198,7 +200,7 @@ def question_detail_edit(request, question_id):
         question_text = request.POST.get('question')
         option1 = request.POST.get('option1')
         option2 = request.POST.get('option2')
-        option3 = request.POST.get('option3')
+        option3 = request.POST.get('option3')  
         option4 = request.POST.get('option4')
         answer = request.POST.get('answer')
 
@@ -230,14 +232,17 @@ def delete_question(request, question_id):
 # question end
 
 
+# views.py
+
 
 def exam_attempt(request, exam_id):
     exam = get_object_or_404(Exam, id=exam_id)
     questions = Question.objects.filter(question_exam=exam)
 
     if request.method == 'POST':
-        user = request.user
-        attempt = ExamAttempt(user=user, exam=exam)
+        session_id = request.session.session_key
+
+        attempt = ExamAttempt(session_id=session_id, exam=exam)
         attempt.save()
 
         question_ids = set()
@@ -254,13 +259,182 @@ def exam_attempt(request, exam_id):
             user_answer = UserAnswer(exam_attempt=attempt, question=question, answer=answer)
             user_answer.save()
 
+        # Perform proctoring checks
+        status_eye_tracking = perform_eye_tracking_check(request)
+        status_mobile_detection = perform_mobile_detection_check(request)
+        status_person_missing = detect_missing_person(request)
+        status_second_person = detect_second_person(request)
+
+        # Capture image if any flag is raised
+        if any([status_eye_tracking, status_mobile_detection, status_person_missing, status_second_person]):
+            capture_image(request, attempt.id)
+
+        # Save the proctoring check results
+        exam_result = ExamResult(exam_attempt=attempt, status_eye_tracking=status_eye_tracking,
+                                 status_mobile_detection=status_mobile_detection,
+                                 status_person_missing=status_person_missing,
+                                 status_second_person=status_second_person)
+        exam_result.save()
+
         attempt.calculate_score()
         messages.success(request, 'Exam submitted successfully.')
-        return redirect('exam_result', attempt_id=attempt.id)
+        # return redirect('exam_result', attempt_id=attempt.id)
 
     return render(request, 'exam_attempt.html', {'exam': exam, 'questions': questions})
 
 
+def perform_eye_tracking_check(request):
+    # Perform eye tracking check logic
+    # Return True if the check is passed, False otherwise
+    pass
+
+
+def perform_mobile_detection_check(request):
+    # Perform mobile phone detection check logic
+    # Return True if the check is passed, False otherwise
+    pass
+
+
+def detect_missing_person(request):
+    # Detect missing person logic
+    # Return True if the person is missing, False otherwise
+    pass
+
+
+def detect_second_person(request):
+    # Detect second person logic
+    # Return True if a second person is detected, False otherwise
+    pass
+
+
+def capture_image(request, attempt_id):
+    # Capture and store the image associated with the attempt
+    # Use attempt_id or session_id to link the image to the attempt
+    pass
+
+
+def calculate_exam_end_time(start_time, duration):
+    duration_minutes = int(duration)
+    end_time = start_time + timedelta(minutes=duration_minutes)
+    return end_time
+
+
+def start_exam(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id)
+    start_time = datetime.now()
+    end_time = calculate_exam_end_time(start_time, exam.duration)
+
+    request.session['exam_id'] = exam_id
+    request.session['start_time'] = start_time
+    request.session['end_time'] = end_time
+
+    # Additional code for rendering the exam start page
+
+    return render(request, 'exam_start.html', {'exam': exam, 'start_time': start_time, 'end_time': end_time})
+
+
+# def exam_attempt(request, exam_id):
+#     exam = get_object_or_404(Exam, id=exam_id)
+#     questions = Question.objects.filter(question_exam=exam)
+
+#     if request.method == 'POST':
+#         # Retrieve session ID
+#         session_id = request.session.session_key
+
+#         # Create or retrieve ExamAttempt based on session ID
+#         attempt, created = ExamAttempt.objects.get_or_create(session_id=session_id, exam=exam)
+
+#         if not created:
+#             messages.error(request, 'You have already attempted this exam.')
+#             return redirect('exam_attempt', exam_id=exam_id)
+
+#         question_ids = set()
+
+#         for question in questions:
+#             answer = request.POST.get(f'question_{question.id}')
+
+#             if question.id in question_ids:
+#                 messages.error(request, 'Each question should have a unique answer.')
+#                 return redirect('exam_attempt', exam_id=exam_id)
+
+#             question_ids.add(question.id)
+
+#             user_answer = UserAnswer(exam_attempt=attempt, question=question, answer=answer)
+#             user_answer.save()
+
+#         attempt.calculate_score()
+#         messages.success(request, 'Exam submitted successfully.')
+#         # return redirect('exam_result', attempt_id=attempt.id)
+
+#     return render(request, 'exam_attempt.html', {'exam': exam, 'questions': questions})
+
+
+
+# def exam_attempt(request, exam_id):
+#     exam = get_object_or_404(Exam, id=exam_id)
+#     questions = Question.objects.filter(question_exam=exam)
+
+#     if request.method == 'POST':
+#         user = request.user
+#         attempt = ExamAttempt(user = user, exam=exam)
+#         attempt.save()
+
+#         question_ids = set()
+
+#         for question in questions:
+#             answer = request.POST.get(f'question_{question.id}')
+
+#             if question.id in question_ids:
+#                 messages.error(request, 'Each question should have a unique answer.')
+#                 return redirect('exam_attempt', exam_id=exam_id)
+
+#             question_ids.add(question.id)
+
+#             user_answer = UserAnswer(exam_attempt=attempt, question=question, answer=answer)
+#             user_answer.save()
+
+#         attempt.calculate_score()
+#         messages.success(request, 'Exam submitted successfully.')
+#         # return redirect('exam_result', attempt_id=attempt.id)
+
+#     return render(request, 'exam_attempt.html', {'exam': exam, 'questions': questions})
+
+
+# def exam_attempt(request, exam_id):
+#     exam = get_object_or_404(Exam, id=exam_id)
+#     questions = Question.objects.filter(question_exam=exam)
+
+#     if request.method == 'POST':
+#         attempt = ExamAttempt(exam=exam)
+#         attempt.save()
+#         question_ids = set()
+
+#         for question in questions:
+#             answer = request.POST.get(f'question_{question.id}')
+
+#             if question.id in question_ids:
+#                 messages.error(request, 'Each question should have a unique answer.')
+#                 return redirect('exam_attempt', exam_id=exam_id)
+
+#             question_ids.add(question.id)
+
+#             user_answer = UserAnswer(exam_attempt=attempt, question=question, answer=answer)
+#             user_answer.save()
+
+#         attempt.calculate_score()
+#         messages.success(request, 'Exam submitted successfully.')
+#         # return redirect('exam_result', attempt_id=attempt.id)
+
+#     return render(request, 'exam_attempt.html', {'exam': exam, 'questions': questions})
+
 def exam_result(request, attempt_id):
     attempt = get_object_or_404(ExamAttempt, id=attempt_id)
     return render(request, 'exam_result.html', {'attempt': attempt})
+
+
+def question_popup(request):
+    question_id = request.GET.get('question_id')
+    # Retrieve the question object based on the question_id
+    # ...
+
+    return render(request, 'question_popup.html', {'question_id': question_id})

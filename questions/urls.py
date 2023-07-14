@@ -19,7 +19,7 @@ urlpatterns = [
 
     path("exam/<int:exam_id>/attempt", exam_attempt, name="exam_attempt"),
     path('exam/result/<int:attempt_id>/',exam_result, name='exam_result'),
-
+    path('question_popup/', question_popup, name='question_popup'),
     # path('exam_attempt/<int:exam_id>/', exam_attempt, name='exam_attempt'),
     
 ]

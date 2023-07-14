@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled Document</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap-4.2.1.css" rel="stylesheet">
+<style>
+.TopDivMarg {
+    margin-bottom: 50px;
+}
+</style>
+</head>
+<body>
+<!-- body code goes here -->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 TopDivMarg"></div>
+  </div>
+
+<!--    Quiz Group  -->
+
+  <div class="row">
+    <div class="col-xl-4"></div>
+    <div class="col-xl-4">
+      <p id="message" class="text-center">[Click on Button to Start Quiz.]</p>
+        <p id="time"></p>
+    </div>
+    <div class="col-xl-4"></div>
+  </div>
+
+<!--    Button Group  -->
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <button type="button" id="myBtn" class="btn btn-info">Start Quiz</button>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+
+<script>
+
+  document.getElementById("myBtn").addEventListener("click", function(){
+  document.getElementById("message").innerHTML = "What are the colors of the rainbow?";
+  errorTimer();
+  setTimeout(clearResultF, 45000);
+});
+
+// Visible Countdown Timer 
+    var timerId;
+    function startTimer(duration, display) {
+
+    var timer = duration, minutes, seconds;
+    if(timerId != undefined) {
+        clearInterval(timerId)
+    };
+
+        timerId = setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+        if (--timer < 0) {
+            timer = duration;
+        };
+    }, 1000);
+    };
+
+    function errorTimer () {
+
+        var fortyFiveSeconds = 60 * .75,
+        display = document.querySelector('#time');
+        startTimer(fortyFiveSeconds, display);
+        };
+
+    // Reset Timer
+
+      function clearResultF() {
+      document.getElementById("message").innerHTML = "[Click on the Button to Start the Quiz.]";
+      };
+
+</script>
