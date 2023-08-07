@@ -1,0 +1,363 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+<section class="heading-page header-text" >
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+      <!-- <menu>        </menu> -->
+        <h2>Exam Detail</h2>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="exam-us" id="exam">
+    <div class="container" style="max-width: 95%;">
+      <div class="row">
+        <div class="col-lg-12 align-self-center">
+          <div class="row">
+
+
+            <div class="col-lg-3">
+              <form id="exam" action="" method="post">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2>Menu</h2>
+                  </div>
+                  <section class="meetings-page" id="meetings">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="filters">
+                                <ul>
+                                    
+                                    <li><a onclick="window.location.href = `{% url 'courses' %}`">Courses</a></li>
+                                    <li class="active"><a onclick="window.location.href = `{% url 'exams' %}`">Exams</a></li>
+                                    <li><a onclick="window.location.href = `{% url 'questions' %}`">Questions</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                </div>
+              </form>
+            </div>
+            <!-- lg9 start-->
+
+
+
+
+            <div class="col-lg-9">
+              <form id="exam" action="{% url 'exam_detail' exam.id %}" method="POST">
+                  {% csrf_token %}
+                  <section class="meetings-page" id="meetings">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="row">
+
+                                <!-- content-start -->
+
+                              <div class="col-lg-12">
+                                <div class="col-lg-12">
+                                  <h2>Exam Details:  <div class="col-lg-12">
+
+                                    <button type="button" id="delete" class="button"  >
+                                        Delete
+                                    </button>
+                                    <button type="button" id="" class="button" onclick="location.href='#popup-box';"  >
+                                        Edit
+                                    </button>
+                                    <button type="button" id="" class="button" onclick="location.href='#popup-box1';"  >
+                                      Create Question
+                                  </button>
+                                  </div>
+                                  <div class="modal col-lg-12" id="popup-box">
+                                    <div class="content">
+
+                                      <!-- start -->
+                                      <div class="col-lg-12" >
+                                        <form id="exam" action="{% url 'exam_detail' exam.id %}" method="POST">
+                                          {% csrf_token %}
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <h2>Edit Exam</h2>
+                                            </div>
+                                            <div class="col-lg-12">
+                                              <fieldset>
+                                                <input type="hidden" name="update_exam" value="1">
+                                                <input name="name" type="text" class="form-control" id="name" placeholder="Name of Exam" value="{{exam.exam_name}}" required=""></input>
+                                              </fieldset>
+                                            </div>
+                                            <div class="col-lg-12">
+                                              <fieldset>
+                                                <textarea name="description" rows="6" class="form-control" id="description" placeholder="Exam Description" required="">{{exam.exam_description}}</textarea>
+                                              </fieldset>
+                                            </div>
+                                            <div class="col-lg-4">
+                                              <fieldset>
+                                                <input name="date" type="datetime-local" class="form-control" id="date" placeholder="Exam Date" required="" value="{{ exam.exam_start_date|date:'Y-m-d\TH:i' }}">
+                                              </fieldset>
+                                            </div>
+                                            <div class="col-lg-4">
+                                              <fieldset>
+                                                <input name="duration" type="number" class="form-control" id="duration" value="{{exam.exam_duration}}" placeholder="Exam Duration in Minutes" required=""></input>
+                                              </fieldset>
+                                            </div>
+                                            <div class="col-lg-12">
+                                              <fieldset>
+                                                <button type="submit" id="form-submit" class="button">Update Exam</button>
+                                              </fieldset>
+                                            </div>
+                                          </div>
+                                        </form>
+                                      </div>
+                                      <!-- end -->
+
+
+                                        <!-- close button -->
+                                        <a href="#"
+                                          class="box-close">
+                                            ×
+                                        </a>
+                                        <!-- close button -->
+
+                                    </div>
+                                </div>
+                                <div class="modal col-lg-12" id="popup-box1">
+                                  <div class="content">
+
+                                    <!-- start -->
+                                    <div class="col-lg-12" >
+                                      <form id="exam" action="{% url 'exam_detail' exam.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                          <div class="col-lg-12">
+                                            <h2>Create Question</h2>
+                                          </div>
+
+                                          <div class="col-lg-4">
+                                            <fieldset>
+                                                <input type="hidden" name="create_question" value="1">
+                                                <input name="course" type="text" class="form-control" id="name" placeholder="Name of Exam" required="" value="{{ exam.exam_name}}" disabled></textarea>
+                                            </fieldset>
+                                        </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="name" type="text" class="form-control" id="name" placeholder="Question Name" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <textarea name="question" type="text" class="form-control" id="message" placeholder=" You can type your Question text in the text area provided below. You can also format your Question text - i.e.- format the text 'bold/italic/underline'." ></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="option1" type="text" class="form-control" id="message" placeholder="Option 1" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="option2" type="text" class="form-control" id="message" placeholder="Option 2" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="option3" type="text" class="form-control" id="message" placeholder="Option 3" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="option4" type="text" class="form-control" id="message" placeholder="Option 4" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <input name="answer" type="text" class="form-control" id="message" placeholder="Correct Option" required=""></textarea>
+                                            </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                            <fieldset>
+                                              <button type="submit" id="form-submit" class="button">Create Question</button>
+                                            </fieldset>
+                                          </div>
+                                        </div>
+                                      </form>
+                                    </div>
+
+                                    <!-- end -->
+
+
+                                      <!-- close button -->
+                                      <a href="#"
+                                        class="box-close">
+                                          ×
+                                      </a>
+                                      <!-- close button -->
+
+                                  </div>
+                              </div>
+                                </h2>
+                                  <!-- content1 start -->
+                                  <section class="meetings-page" id="meetings">
+                                    <div class="container" >
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="row grid">
+
+                                                    <div class="col-lg-4 templatemo-item-col all soon ">
+                                                        <div class="card-item">
+                                                            <div class="thumb">
+                                                                <img src="{% static 'images/exam.gif' %}" alt="{{ exam.exam_name}}"style="width:200px;height:150px;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div class="row">
+                                                    <h4 style="color:#A12121;"><br><strong>Name: {{ exam.exam_name}}</strong></h4>
+                                                    <p1><br><strong>Exam ID: {{ exam.id}}</strong></p1>
+                                                    <p1><strong>Program Type: {{course.programtype}}</strong></p1>
+                                                    <p1><strong>Course Session: {{course.coursesession}}</strong></p1>
+                                                    <p1><strong>Course Code: {{course.coursecode}}</strong></p1>
+                                                    <p1><strong>Course Name: {{course.coursename}}</strong></p1>
+                                                    
+                                                    <p1><strong>Start Time: </strong>{{ exam.exam_start_date}}</p1>
+                                                    <p1><strong>Duration: </strong>{{ exam.exam_duration}} min</p1>
+                                                    <p1><strong>Description: </strong><em>{{ exam.exam_description}}</em></p1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <h2 style="
+                                            margin-bottom: 0px !important;"><br>Questions Under This Exam</h2>
+                                            <div class="col-lg-12">
+                                                <div class="row" style="overflow-x:auto;">
+                                          <table class="styled-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Q.ID</th>
+                                                    <th>Question_Name</th>
+                                                    <th>Question_Text</th>
+                                                    <th>Option_1</th>
+                                                    <th>Option_2</th>
+                                                    <th>Option_3</th>
+                                                    <th>Option_4</th>
+                                                    <th>Correct_Answer</th>
+                                                    <th>Examination_Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              {% for item in questions %}
+                                                <tr class="active-row">
+                                                  <td>{{item.id}}</td>
+                                                  <td><a href="{% url 'question_detail' question_id=item.id %}" style="color: #870000;">{{ item.question_name }}</a></td>
+                                                  <td>{{item.question_text}}</td>
+                                                  <td>{{item.option1}}</td>
+                                                  <td>{{item.option2}}</td>
+                                                  <td>{{item.option3}}</td>
+                                                  <td>{{item.option4}}</td>
+                                                  <td>{{item.correct_answer}}</td>
+                                                  <td>{{item.question_exam }}</td>
+                                                </tr>
+                                                <!-- and so on... -->
+                                              {% endfor %}
+                                              </tbody>
+                                        </table>
+                                        </div></div>
+
+                                        <div class="col-lg-12">
+                                          <h2></h2>
+                                      <div class="pagination">
+                                        <ul>
+                                          {% if questions.has_previous %}
+                                          <li><a href="?page=1"> 1</a></li>
+                                          <li><a href="?page={{ questions.previous_page_number }}"><i class="fa-solid fa-chevron-left fa-beat" style="color: #fff;"></i></a></li>
+                                          {% endif %}
+                                          <li class="active"><a href="#">{{questions.number}}</a></li>
+                                          {% if questions.has_next %}
+                                          <li><a href="?page={{ questions.next_page_number }}"><i class="fa-solid fa-chevron-right fa-beat" style="color: #fff;"></i></a></li>
+                                          <li><a href="?page={{ questions.paginator.num_pages }}">{{ questions.paginator.num_pages }}</a></li>
+                                          {% endif %}
+
+                                        </ul>
+                                      </div>
+                                        </div>
+
+
+                                                </div>
+                                                </div>
+
+
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                </section>
+                                <!-- content1 end -->
+
+
+                                </div>
+                              </div>
+
+                      <!-- content-end -->
+                            </div>
+                          </div>
+                        </div>
+                    </section>
+
+                </form>
+              </div>
+
+
+
+
+
+
+            <!-- lg9 end-->
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<script>
+  document.getElementById("delete").addEventListener("click", function() {
+    if (confirm("Are you sure you want to delete the Exam?\nNote: This action cannot be undone.\nAll the questions under this exam will also be deleted.")) {
+      var CId = "{{ exam.id }}";
+      var deleteUrl = "{% url 'delete_exam' 0 %}".replace("0", CId);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", deleteUrl, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Add this line to include the CSRF token
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          // Question deleted successfully
+          location.href = "{% url 'exams' %}";
+        } else {
+          // Error occurred while deleting the question
+          alert("An error occurred while deleting the question. Please try again later.");
+        }
+      };
+      xhr.send();
+    }
+  });
+  </script>
+{% endblock %}

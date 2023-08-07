@@ -1,0 +1,131 @@
+/*======================
+    404 page
+=======================*/
+
+.page_404 {
+  padding: 40px 0;
+  background: #fff;
+  font-family: "Arvo", serif;
+}
+
+.page_404 img {
+  width: 100%;
+}
+
+.four_zero_four_bg {
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 400px;
+  background-position: center;
+}
+
+.text-center h1 {
+  font-size: 80px;
+}
+
+.four_zero_four_bg h3 {
+  font-size: 80px;
+}
+
+/* .link_404{      
+color: #fff!important;
+padding: 10px 20px;
+background: #39ac31;
+margin: 20px 0;
+display: inline-block;}
+.contant_box_404{ margin-top:-50px;} */
+
+.link-container {
+  text-align: center;
+}
+
+.a {
+  text-decoration: none;
+  color: #fff;
+}
+a:hover {
+  color: #000;
+}
+
+/* .link_404 {
+text-transform: uppercase;
+font-size: 13px;
+background-color: #73181e;
+padding: 10px 15px;
+border-radius: 0;
+color: #fff;
+display: inline-block;
+margin-right: 5px;
+margin-bottom: 5px;
+line-height: 1.5;
+text-decoration: none;
+margin-top: 05px;
+letter-spacing: 1px;
+} */
+
+.main-button-red a {
+  font-size: 13px;
+  color: #fff;
+  background-color: #c11d23;
+  padding: 12px 30px;
+  display: inline-block;
+  border-radius: 22px;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+a:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.shake {
+  animation-name: shake;
+  -webkit-animation-name: shake;
+  -moz-animation-name: shake;
+  animation-duration: 1s;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+/* /*======================
+    404 page end */
