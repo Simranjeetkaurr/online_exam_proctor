@@ -1,0 +1,15 @@
+asgiref
+beautifulsoup4
+Django
+django-bootstrap4
+django-pyodbc
+greenlet
+mssql-django
+Pillow
+pyodbc
+pytz
+soupsieve
+SQLAlchemy
+sqlparse
+typing_extensions
+tzdata

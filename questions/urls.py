@@ -13,4 +13,6 @@ urlpatterns = [
     # deletion of items
     path("question/<int:question_id>/delete", delete_question, name="delete_question"),
     path("exam/<int:exam_id>/delete", exam_delete, name="delete_exam"),
+    # path('csv_upload/', csv_upload, name='csv_upload'),
+    # path('upload-csv/', csv_upload, name='csv_upload'),
 ]

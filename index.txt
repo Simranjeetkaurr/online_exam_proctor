@@ -1,0 +1,428 @@
+      <!-- start popup-box5 -->
+                                                            <div class="modal col-lg-12" id="popup-box5">
+                                                                <div class="content">
+                                                                    <!-- start -->
+                                                                    <div class="col-lg-12">
+                                                                        <form id="csv-upload-form" action="{% url 'csv_upload' %}" method="post" enctype="multipart/form-data">
+                                                                            {% csrf_token %}
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12">
+                                                                                    <h2>Upload CSV</h2>
+                                                                                </div>
+                                                                                <div class="col-lg-12">
+                                                                                    <fieldset>
+                                                                                        <input name="csv_file" type="file" id="csv_file" accept=".csv" required>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                                <div class="col-lg-12">
+                                                                                    <fieldset>
+                                                                                        <button type="submit" id="csv-upload-button" class="button">Upload CSV</button>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <!-- end -->
+                                                                    <!-- close button -->
+                                                                    <a href="#" class="box-close">×</a>
+                                                                    <!-- close button -->
+                                                                </div>
+                                                            </div>
+                                                            <!-- ends here popup-box5 -->
+
+
+
+
+# working without question creation. 
+
+# def csv_upload(request):
+#     if request.method == 'POST':
+#         try:
+#             csv_file = request.FILES.get('csv_file')
+#             if csv_file and csv_file.name.endswith('.csv'):
+#                 decoded_file = csv_file.read().decode('utf-8').splitlines()
+#                 csv_reader = csv.DictReader(decoded_file)
+#                 questions_created = 0
+
+#                 exam_ids_in_csv = set()
+#                 for row in csv_reader:
+#                     exam_id = row.get('exam')
+#                     exam_ids_in_csv.add(exam_id)
+
+#                 existing_exams = Exam.objects.filter(id__in=exam_ids_in_csv)
+#                 print("Exam IDs in CSV:", exam_ids_in_csv)
+#                 print("Existing Exams:", existing_exams)
+
+#                 for row in csv_reader:
+#                     exam_id = row.get('exam')
+#                     name = row.get('name')
+#                     question_text = row.get('question')
+#                     option1 = row.get('option1')
+#                     option2 = row.get('option2')
+#                     option3 = row.get('option3')
+#                     option4 = row.get('option4')
+#                     answer = row.get('answer')
+
+#                     try:
+#                         exam = existing_exams.get(id=exam_id)
+#                     except Exam.DoesNotExist:
+#                         messages.warning(request, f"Exam with ID '{exam_id}' does not exist. Skipping question '{name}'.")
+#                         continue
+
+#                     question = Question(
+#                         question_exam=exam,
+#                         question_name=name,
+#                         question_text=question_text,
+#                         option1=option1,
+#                         option2=option2,
+#                         option3=option3,
+#                         option4=option4,
+#                         correct_answer=answer
+#                     )
+#                     question.save()
+#                     questions_created += 1
+
+#                 messages.success(request, f'{questions_created} questions created successfully from the CSV file.')
+#             else:
+#                 messages.error(request, 'Please upload a valid CSV file.')
+
+#         except Exception as e:
+#             messages.error(request, f'Error occurred while processing the CSV file: {str(e)}')
+
+#     return redirect('questions')  
+
+
+# 
+# ===================================
+# import csv
+# import base64
+# from django.contrib import messages
+# from django.shortcuts import render, redirect
+# from .models import Acourse, Exam, Question
+
+# def upload_questions_from_csv(file_path):
+#     with open(file_path, 'r', encoding='utf-8') as csvfile:
+#         reader = csv.DictReader(csvfile)
+        
+#         for row in reader:
+#             # Handle null values for non-mandatory fields
+#             for key in row.keys():
+#                 if row[key] == '':
+#                     row[key] = None
+            
+#             # Retrieve the selected exam
+#             exam_id = row['exam']
+#             exam = Exam.objects.get(id=exam_id)
+            
+#             image = row['question_image']
+#             if image is None:
+#                 base64_image = ''
+#             else:    
+#                 with open(image, 'rb') as img_file:
+#                     base64_image = base64.b64encode(img_file.read()).decode('utf-8')
+            
+#             # Create a new Question object
+#             try:
+#                 question = Question(
+#                     question_exam=exam,
+#                     question_name=row['name'],
+#                     question_text=row['question'],
+#                     question_image=base64_image,
+#                     option1=row['option1'],
+#                     option2=row['option2'],
+#                     option3=row['option3'],
+#                     option4=row['option4'],
+#                     correct_answer=row['answer']
+#                 )
+#                 question.save()
+#             except Exception as e:
+#                 print(f'Error occurred: {str(e)}, Skipping question')
+
+# def questions(request):
+#     course = Acourse.objects.filter(isactive=True, isdeleted=False)
+#     exam = Exam.objects.filter(courseid__in=course)
+#     data = Question.objects.filter(question_exam__in=exam)
+
+#     if request.method == 'POST':
+#         if 'create_question' in request.POST:
+#             exam_id = request.POST.get('exam')
+#             name = request.POST.get('name')
+#             question_text = request.POST.get('question')
+#             image = request.FILES.get('image')
+#             option1 = request.POST.get('option1')
+#             option2 = request.POST.get('option2')
+#             option3 = request.POST.get('option3')
+#             option4 = request.POST.get('option4')
+#             answer = request.POST.get('answer')
+
+#             # Retrieve the selected exam
+#             exam = Exam.objects.get(id=exam_id)
+        
+#             if image is None:
+#                 base64_image = ''
+#             else:    
+#                 with image.open('rb') as img_file:
+#                     base64_image = base64.b64encode(img_file.read()).decode('utf-8')
+
+#             # Create a new Question object
+#             try:
+#                 question = Question(
+#                     question_exam=exam,
+#                     question_name=name,
+#                     question_text=question_text,
+#                     question_image=base64_image,
+#                     option1=option1,
+#                     option2=option2,
+#                     option3=option3,
+#                     option4=option4,
+#                     correct_answer=answer
+#                 )
+#                 question.save()
+#                 # Success message
+#                 messages.success(request, 'Question created successfully.')
+#                 return redirect('questions')
+#             except Exception as e:
+#                 messages.error(request, f'Error occurred: {str(e)}, Kindly choose another name.')
+#                 return redirect('questions')
+        
+#         elif 'csv_upload' in request.POST:
+#             csv_file = request.FILES.get('csv_file')
+            
+#             if csv_file:
+#                 try:
+#                     # Save the uploaded CSV file temporarily to the server
+#                     with open('temp.csv', 'wb+') as temp_csv:
+#                         for chunk in csv_file.chunks():
+#                             temp_csv.write(chunk)
+                    
+#                     # Call the function to upload questions from the CSV
+#                     upload_questions_from_csv('temp.csv')
+                    
+#                     # Success message
+#                     messages.success(request, 'Questions uploaded successfully.')
+#                     return redirect('questions')
+#                 except Exception as e:
+#                     messages.error(request, f'Error occurred: {str(e)}')
+#                     return redirect('questions')
+#             else:
+#                 messages.error(request, 'No CSV file uploaded.')
+#                 return redirect('questions')
+    
+#         return render(request, 'questions.html', {'data': page_obj, 'exam': exam})
+# #     return render(request, "questions.html", {'data': page_obj, 'exam': exam})
+#     datas = data.order_by('id')
+#     paginator = Paginator(datas, 13)
+#     page_number = request.GET.get("page")
+#     try:
+#         page_obj = paginator.get_page(page_number)
+#     except PageNotAnInteger:
+#         page_obj = paginator.page(1)
+#     except EmptyPage:
+#         page_obj = paginator.page(paginator.num_pages)
+
+#     return render(request, "questions.html", {'data': page_obj, 'exam': exam})
+
+
+
+# ========== sample code =============
+
+# def questions(request):
+#     course = Acourse.objects.filter(isactive=True, isdeleted=False)
+#     exam = Exam.objects.filter(courseid__in=course)
+#     data = Question.objects.filter(question_exam__in=exam)
+
+#     if request.method == 'POST' and 'create_question' in request.POST:
+#         exam_id = request.POST.get('exam')
+#         name = request.POST.get('name')
+#         question = request.POST.get('question')
+#         image= request.FILES.get('image')
+#         option1 = request.POST.get('option1')
+#         option2 = request.POST.get('option2')
+#         option3 = request.POST.get('option3')
+#         option4 = request.POST.get('option4')
+#         answer = request.POST.get('answer')
+
+#         # Retrieve the selected exam
+#         exam = Exam.objects.get(id=exam_id)
+        
+        
+#         if image is None:
+#             base64_image = ''
+#         else:    
+#             with image.open('rb') as img_file:
+#                 base64_image = base64.b64encode(img_file.read()).decode('utf-8')
+                
+        
+#         # Create a new Question object
+#         try:
+#             question = Question(question_exam=exam, question_name=name, question_text=question,question_image=base64_image,
+#                                 option1=option1, option2=option2, option3=option3, option4=option4, correct_answer=answer)
+#             question.save()
+#             # Success message
+#             messages.success(request, 'Question created successfully.')
+#             return redirect('questions')
+#         except Exception as e:
+#             messages.error(
+#                 request, f'Error occurred: {str(e)}, Kindly Choose another name ')
+#             return redirect('questions')
+    
+    
+#     # elif request.method == 'POST' and 'csv_file' in request.FILES:
+#     elif 'upload_csv' in request.POST and request.FILES.get('csv_file'):
+#             csv_file = request.FILES.get('csv_file')
+            
+#             try:
+#                 decoded_file = csv_file.read().decode('utf-8').splitlines()
+#                 csv_reader = csv.DictReader(decoded_file)
+                
+#                 for row in csv_reader:
+#                     exam_id = row['exam']
+#                     name = row['name']
+#                     question = row['question ']
+#                     image = row['image']
+#                     option1 = row['option1']
+#                     option2 = row['option2']
+#                     option3 = row['option3']
+#                     option4 = row['option4']
+#                     answer = row['answer']
+                    
+#                     exam = Exam.objects.get(id=exam_id)
+#                     if image:
+#                         with open(image, 'rb') as img_file:
+#                              base64_image = base64.b64encode(
+#                         img_file.read()).decode('utf-8')
+#                     else:
+#                        base64_image = ''
+                    
+#                     question = Question(question_exam=exam, question_name=name, question_text=question,question_image=base64_image,
+#                                         option1=option1, option2=option2, option3=option3, option4=option4, correct_answer=answer)
+#                     question.save()
+                    
+#                 messages.success(request, 'Questions created successfully from the CSV file.')
+#                 return redirect('questions')
+#             except Exception as e:
+#                 messages.error(request, f'Error occurred while processing the CSV file: {str(e)}')
+#                 return redirect('questions') 
+    
+
+#     datas = data.order_by('id')
+#     paginator = Paginator(datas, 13)
+#     page_number = request.GET.get("page")
+#     try:
+#         page_obj = paginator.get_page(page_number)
+#     except PageNotAnInteger:
+#         page_obj = paginator.page(1)
+#     except EmptyPage:
+#         page_obj = paginator.page(paginator.num_pages)
+
+#     return render(request, "questions.html", {'data': page_obj, 'exam': exam})
+
+# # =============csv =======
+
+# def csv_upload(request):
+#     if request.method == 'POST' and request.FILES.get('csv_file'):
+#         csv_file = request.FILES['csv_file']
+
+#         try:
+#             decoded_file = csv_file.read().decode('utf-8')
+#             csv_data = csv.reader(decoded_file.splitlines(), delimiter=',')
+
+#             exam_id = request.POST.get('exam')
+#             exam = Exam.objects.get(id=exam_id)
+
+#             created_count = 0
+
+#             for row in csv_data:
+#                 name = row[0]
+#                 question = row[1]
+#                 image = row[2]
+#                 option1 = row[3]
+#                 option2 = row[4]
+#                 option3 = row[5]
+#                 option4 = row[6]
+#                 answer = row[7]
+
+#                 question_obj = Question(
+#                     question_exam=exam,
+#                     question_name=name,
+#                     question_text=question,
+#                     question_image=image,
+#                     option1=option1,
+#                     option2=option2,
+#                     option3=option3,
+#                     option4=option4,
+#                     correct_answer=answer
+#                 )
+#                 question_obj.save()
+#                 created_count += 1
+
+#             messages.success(request, f'{created_count} questions created successfully from the CSV file.')
+#         except Exception as e:
+#             messages.error(request, f'Error occurred while processing the CSV file: {str(e)}')
+
+#     return redirect('questions')
+
+
+# # =========csv code ends here ========
+
+# # ================ ends here!=======
+
+
+
+# question start
+def questions(request):
+    course=Acourse.objects.filter(isactive=True, isdeleted=False)
+    exam = Exam.objects.filter(courseid__in=course)
+    data = Question.objects.filter(question_exam__in=exam)
+    
+    
+    
+    if request.method == 'POST':
+        exam_id = request.POST.get('exam')
+        name = request.POST.get('name')
+        question = request.POST.get('question')
+        image= request.FILES.get('image')
+        option1 = request.POST.get('option1')
+        option2 = request.POST.get('option2')
+        option3 = request.POST.get('option3')
+        option4 = request.POST.get('option4')
+        answer = request.POST.get('answer')
+
+        # Retrieve the selected exam
+        exam = Exam.objects.get(id=exam_id)
+        
+        
+        if image is None:
+            base64_image = ''
+        else:    
+            with image.open('rb') as img_file:
+                base64_image = base64.b64encode(img_file.read()).decode('utf-8')
+                
+        
+        # Create a new Question object
+        try:
+            question = Question(question_exam=exam, question_name=name, question_text=question,question_image=base64_image,
+                                option1=option1, option2=option2, option3=option3, option4=option4, correct_answer=answer)
+            question.save()
+            # Success message
+            messages.success(request, 'Question created successfully.')
+            return redirect('questions')
+        except Exception as e:
+            messages.error(
+                request, f'Error occurred: {str(e)}, Kindly Choose another name ')
+            return redirect('questions')
+    datas=data.order_by('id')
+    paginator = Paginator(datas, 13)
+    page_number = request.GET.get("page")
+    try:
+        page_obj = paginator.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        page_obj = paginator.page(paginator.num_pages)
+    page_obj = paginator.get_page(page_number)
+    return render(request, "questions.html", {'data': page_obj, 'exam': exam})
+
+# Single question ends=====>  
