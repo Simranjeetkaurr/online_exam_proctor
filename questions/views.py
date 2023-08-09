@@ -326,47 +326,49 @@ def questions(request):
 
         elif 'upload_csv' in request.POST and request.FILES.get('csv_file'):
             csv_file = request.FILES.get('csv_file')
-
             try:
                 decoded_file = csv_file.read().decode('utf-8').splitlines()
                 csv_reader = csv.DictReader(decoded_file)
-
+                
                 if request.method == 'POST':
-                    exam_id = request.POST.get('exam')
-                    for row in csv_reader:
-                        # exam_id = row['exam']
-                        name = row['name']
-                        question_text = row['question']
-                        image = row['image']
-                        option1 = row['option1']
-                        option2 = row['option2']
-                        option3 = row['option3']
-                        option4 = row['option4']
-                        answer = row['answer']
+                    # Retrieve the selected exam ID from the dropdown
+                    selected_exam = request.POST.get('exam')
 
-                    try:
-                        exam = Exam.objects.get(id=exam_id)
-                    except Exam.DoesNotExist:
-                        messages.error(request, f'Error occurred while processing the CSV file: Exam with ID {exam_id} does not exist.')
-                        return redirect('questions')
+                try:
+                    exam = Exam.objects.get(id=selected_exam)
+                except Exam.DoesNotExist:
+                    messages.error(
+                    request, f'Error occurred while processing the CSV file: Exam with ID {selected_exam} does not exist.')
+                    return redirect('questions')
+
+                for row in csv_reader:
+                    name = row['name']
+                    question_text = row['question']
+                    image = row['image']
+                    option1 = row['option1']
+                    option2 = row['option2']
+                    option3 = row['option3']
+                    option4 = row['option4']
+                    answer = row['answer']
 
                     if image:
                         with open(image, 'rb') as img_file:
-                            base64_image = base64.b64encode(img_file.read()).decode('utf-8')
+                            base64_image = base64.b64encode(
+                            img_file.read()).decode('utf-8')
                     else:
                         base64_image = ''
 
                     question_obj = Question(question_exam=exam, question_name=name, question_text=question_text,
-                                            question_image=base64_image,
-                                            option1=option1, option2=option2, option3=option3, option4=option4,
-                                            correct_answer=answer)
+                                        question_image=base64_image,
+                                        option1=option1, option2=option2, option3=option3, option4=option4,
+                                        correct_answer=answer)
                     question_obj.save()
-
                 messages.success(request, 'Questions created successfully from the CSV file.')
                 return redirect('questions')
             except Exception as e:
                 messages.error(request, f'Error occurred while processing the CSV file: {str(e)}')
                 return redirect('questions')
+
 
     datas = data.order_by('id')
     paginator = Paginator(datas, 13)
@@ -380,45 +382,6 @@ def questions(request):
 
     return render(request, "questions.html", {'data': page_obj, 'exam': exam})
 
-@csrf_exempt
-def your_upload_view(request):
-    if request.method == "POST":
-        # Verify CSRF token
-        if not request.POST.get('csrfmiddlewaretoken'):
-            return JsonResponse({'error': 'CSRF token not provided.'}, status=403)
-
-        # Process the uploaded CSV file and create questions
-        selected_exam = request.POST.get('selected_exam')
-        csv_file = request.FILES['csv_file']
-
-        try:
-            decoded_file = csv_file.read().decode('utf-8').splitlines()
-            csv_reader = csv.DictReader(decoded_file)
-
-            for row in csv_reader:
-                name = row['name']
-                question_text = row['question']
-                image = row['image']
-                option1 = row['option1']
-                option2 = row['option2']
-                option3 = row['option3']
-                option4 = row['option4']
-                answer = row['answer']
-
-                try:
-                    exam = Exam.objects.get(id=selected_exam)
-                except Exam.DoesNotExist:
-                    messages.error(request, f'Error occurred while processing the CSV file: Exam with ID {selected_exam} does not exist.')
-                    return JsonResponse({'error': 'Exam does not exist.'}, status=400)
-
-                # Rest of your code to process and save the question
-                # ...
-
-            return JsonResponse({'message': 'Questions created successfully from the CSV file.'})
-        except Exception as e:
-            return JsonResponse({'error': f'Error occurred while processing the CSV file: {str(e)}'}, status=400)
-    else:
-        return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 #  =========================
 def question_detail_edit(request, question_id):
