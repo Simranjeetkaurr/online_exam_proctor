@@ -37,6 +37,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # 'support_app.middleware.SystemCheckMiddleware',
+
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -60,19 +62,34 @@ TEMPLATES = [
 WSGI_APPLICATION = "main.wsgi.application"
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "mssql",
+#         "NAME": "CU_LMS_Dev",
+#         "USER": "sa",
+#         "HOST": "3.109.95.156",
+#         "PORT": "1433",
+#         "PASSWORD": "Test@123",
+#         "OPTIONS": {
+#             "driver": "ODBC Driver 17 for SQL Server",
+#         }
+#     }
+# }
+
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
         "NAME": "CU_LMS_Dev",
-        "USER": "edr",
-        "HOST": "43.240.66.78",
+        "USER": "sa",
+        "HOST": "3.109.95.156",
         "PORT": "1433",
-        "PASSWORD": "edr@123",
+        "PASSWORD": "Test@123",
         "OPTIONS": {
             "driver": "ODBC Driver 17 for SQL Server"
         }
+         
     }
-}
+} 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -115,3 +132,15 @@ STATICFILES_DIRS = [os.path.join(FILES, 'assets')]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# SUPPORTED_PARAMETERS = {
+#     'operating_system': ['Windows 7', 'Windows 8', 'Windows 8.1', 'Windows 10', 'Mac OS X: MacOS 10.10', '10.11', '10.12', '10.13(OS X)'],
+#     'supported_devices': ['Desktop', 'Laptop*'],
+#     'processor': '64-bit Intel® Pentium 4 processor or later that’s SSE2 capable',
+#     'memory': '4 GB RAM',
+#     'screen_size': '14 inch',
+#     'screen_resolution': '1024 x 768 24 bit',
+#     'other_requirements': 'External keyboard and mouse, Wired network connection required, Broadband internet 5MB/s download, 1 MB/s upload per examinee workstation (minimum 10MB/s download and 5MB/s upload)',
+# }
+

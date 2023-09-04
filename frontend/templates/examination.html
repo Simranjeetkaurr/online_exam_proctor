@@ -1,157 +1,251 @@
-{% load static %}
-{% load i18n %}
-{% block content %}
+{% load static %} {% load i18n %} {% block content %}
 <header>
-    <div class="container-fluid">
-        <div class="row">
-            <div id="app" class="app ">
-                <div class="header-wrapper">
-                    <div class="left">
-                        <span class="logo-wrapper"><img alt="OnlineCU" src="{% static 'images/logo1.png' %}" class="logo"></span>
-                            <span class="border-seperator"></span>
-                                <div class="progressbar-wrapper">
-                                    <div class="progressbar-label margin-right-16">
-                                        <span class="semi-bold margin-right-4">{{ null }} / {{ data.paginator.num_pages }}</span>
-                                        Completed
-                                    </div>
-                                    <div class="progressbar-container">
-                                        <div class="progressbar" style="width: 0%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="center">
-                                <div class="timer" id="timer" time="{{exam.exam_duration}}">
-                                    <div class=" inline-block header-tooltips hide-tool-tip " aria-label="The timer starts when you view the questions."  role="tooltip">
-                                        <span id="hours" class="timer-span inline-block"></span>
-                                        <span class="margin-left-4 margin-right-4">:</span>
-                                        <span id="minutes" class="timer-span inline-block"></span>
-                                        <span class="margin-left-4 margin-right-4">:</span>
-                                        <span id="seconds" class="timer-span inline-block"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="right"><span class="border-seperator"></span><button type="button" class="user-email btn-plain">
-                                        <div class="" aria-label="test@gmail.com" role="tooltip">
-                                            <span class="ellipsis inline-block email">test@gmail.com</span>
-                                        </div>
-                                    </button>
-                                    <span class="border-seperator"></span>
-                                    <div class="help-container">
-                                        <button type="button" class="help-wrapper btn-plain" aria-label="Help">
-                                            <i class="fa-solid fa-circle-info fa-fade" tooltip="" style="color: #ffffff;"></i> Help
-                                        </button>
-                                    </div>
-                                        <span class="border-seperator"></span>
-                                        <button type="button" class="btn end-test" id="end">End Test</button>
-                            </div>
-                </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div id="app" class="app">
+        <div class="header-wrapper">
+          <div class="left">
+            <span class="logo-wrapper"
+              ><img
+                alt="OnlineCU"
+                src="{% static 'images/logo1.png' %}"
+                class="logo"
+            /></span>
+            <span class="border-seperator"></span>
+            <div class="progressbar-wrapper">
+              <div class="progressbar-label margin-right-16">
+                <span class="semi-bold margin-right-4"
+                  >{{ null }} / {{ data.paginator.num_pages }}</span
+                >
+                Completed
+              </div>
+              <div class="progressbar-container">
+                <div class="progressbar" style="width: 0%"></div>
+              </div>
             </div>
+          </div>
+          <div class="center">
+            <div class="timer" id="timer" time="{{exam.exam_duration}}">
+              <div
+                class="inline-block header-tooltips hide-tool-tip"
+                aria-label="The timer starts when you view the questions."
+                role="tooltip"
+              >
+                <span id="hours" class="timer-span inline-block"></span>
+                <span class="margin-left-4 margin-right-4">:</span>
+                <span id="minutes" class="timer-span inline-block"></span>
+                <span class="margin-left-4 margin-right-4">:</span>
+                <span id="seconds" class="timer-span inline-block"></span>
+              </div>
+            </div>
+          </div>
+          <div class="right">
+            <span class="border-seperator"></span
+            ><button type="button" class="user-email btn-plain">
+              <div class="" aria-label="test@gmail.com" role="tooltip">
+                <span class="ellipsis inline-block email">test@gmail.com</span>
+              </div>
+            </button>
+            <span class="border-seperator"></span>
+            <div class="help-container">
+              <button
+                type="button"
+                class="help-wrapper btn-plain"
+                aria-label="Help"
+              >
+                <i
+                  class="fa-solid fa-circle-info fa-fade"
+                  tooltip=""
+                  style="color: #ffffff"
+                ></i>
+                Help
+              </button>
+            </div>
+            <span class="border-seperator"></span>
+            <button type="button" class="btn end-test" id="end">
+              End Test
+            </button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </header>
 
-
-
 <body>
-    <div id="viewport">
-
-        <div id="sidebar" class="sidebar">
-            <header style="position: fixed;z-index: 1000;width:50px">
-                <a href="#"><i class="fa-solid fa-clipboard-question fa-shake position-sticky" style="color: #ffffff;"></i></a>
-            </header>
-            <ul class="nav" style="margin-top:60px;">
-                {% if data.has_previous %}
-                <li></li>
-                {% endif %}
-                {% for page in data.paginator.page_range %}
-                    {% if page == data.number %}
-                    <li>
-                        <a href="#" ><span>{{ page }}</span><div class="liquid1"></div></a>
-                        <hr class="solid ">
-                    </li>
-                    {% else %}
-                    <li>
-                        <a href="?page={{ page }}"><span>{{ page }}</span><div class="liquid"></div></a>
-                        <hr class="solid">
-                    </li>
+  <div id="viewport">
+    <div id="sidebar" class="sidebar">
+      <header style="position: fixed; z-index: 1000; width: 50px">
+        <a href="#"
+          ><i
+            class="fa-solid fa-clipboard-question fa-shake position-sticky"
+            style="color: #ffffff"
+          ></i
+        ></a>
+      </header>
+      <ul class="nav" style="margin-top: 60px">
+        {% if data.has_previous %}
+        <li></li>
+        {% endif %} {% for page in data.paginator.page_range %} {% if page ==
+        data.number %}
+        <li>
+          <a href="#"
+            ><span>{{ page }}</span>
+            <div class="liquid1"></div
+          ></a>
+          <hr class="solid" />
+        </li>
+        {% else %}
+        <li>
+          <a href="?page={{ page }}"
+            ><span>{{ page }}</span>
+            <div class="liquid"></div
+          ></a>
+          <hr class="solid" />
+        </li>
+        {% endif %} {% endfor %} {% if data.has_next %}
+        <li></li>
+        {% endif %}
+      </ul>
+    </div>
+    <div id="content">
+      <nav class="navbar navbar-default"></nav>
+      <div class="container-fluid" style="margin-top: 45px">
+        <div class="row">
+          <div class="col-8 px-10" style="overflow-y: hidden">
+            <h1>Examination Name : {{exam.exam_name}}</h1>
+            <div id="quiz">
+              <form method="post" action="" id="myForm">
+                {% csrf_token %}
+                <div class="question-container">
+                  {% for item in data %}
+                  <div id="question{{ item.id }}" class="question">
+                    <h2>Question No: {{ data.number }}</h2>
+                    <h3>{{ item.question_name }}</h3>
+                    {% if item.question_text %}
+                    <p>
+                      <strong style="font-size: 14px">Description:</strong
+                      ><br />{{ item.question_text }}
+                    </p>
+                    {% endif %} {% if item.question_image %}
+                    <p>
+                      <strong strong style="font-size: 14px">Image: </strong>
+                    </p>
+                    <p style="text-align: center; margin-top: -50px">
+                      <br /><img
+                        src="data:image/jpeg;base64,{{ item.question_image }}"
+                        style="
+                          height: 250px;
+                          border-top-left-radius: 20px;
+                          border-bottom-right-radius: 20px;
+                          border-bottom-left-radius: 20px;
+                          border-top-right-radius: 20px;
+                        "
+                      />
+                    </p>
                     {% endif %}
-                {% endfor %}
-                {% if data.has_next %}
-                <li></li>
-                {% endif %}
-            </ul>
-        </div>
-        <div id="content">
-            <nav class="navbar navbar-default"></nav>
-                <div class="container-fluid" style="margin-top: 45px;">
-                    <div class="row">
-                        <div class="col-8 px-10" style="overflow-y: hidden;">
-                            <h1>Examination Name : {{exam.exam_name}}</h1>
-                            <div id="quiz">
-                                <form method="post" action="" id="myForm">
-                                    {% csrf_token %}
-                                    <div class="question-container">
-                                        {% for item in data %}
-                                        <div id="question{{ item.id }}" class="question">
-                                            <h2>Question No: {{ data.number }}</h2>
-                                            <h3>{{ item.question_name }}</h3>
-                                            {% if item.question_text %}
-                                            <p><strong style="font-size:14px;">Description:</strong><br>{{ item.question_text }}</p>
-                                            {% endif %}
-                                            {% if item.question_image %}
-                                            <p ><strong strong style="font-size:14px;">Image: </strong></p>
-                                            <p style="text-align: center; margin-top: -50px;"><br><img src="data:image/jpeg;base64,{{ item.question_image }}" style=" height: 250px; border-top-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px;"></p>
-                                            {% endif %}
-                                            <ul>
-                                                <label style="{% if answer == item.option1 %} backdrop-filter: blur(15px) saturate(75%);
+                    <ul>
+                      <label
+                        style="{% if answer == item.option1 %} backdrop-filter: blur(15px) saturate(75%);
                                                 background-color: rgb(105 96 96 / 44%);
                                                 border-radius: 12px;
-                                                {% endif %}"><li><input type="radio" name="q{{ item.id }}" value="{{ item.option1 }}"  {% if answer == item.option1 %} background-color: green; checked {% endif %}>  {{ item.option1 }}</li></label>
-                                                <label style="{% if answer == item.option2 %} backdrop-filter: blur(15px) saturate(75%);
+                                                {% endif %}"
+                        ><li>
+                          <input type="radio" name="q{{ item.id }}" value="{{
+                          item.option1 }}" {% if answer == item.option1 %}
+                          background-color: green; checked {% endif %}> {{
+                          item.option1 }}
+                        </li></label
+                      >
+                      <label
+                        style="{% if answer == item.option2 %} backdrop-filter: blur(15px) saturate(75%);
                                                 background-color: rgb(105 96 96 / 44%);
-                                                border-radius: 12px; {% endif %}"><li><input type="radio" name="q{{ item.id }}" value="{{ item.option2 }}"  {% if answer == item.option2 %} background-color: green; checked {% endif %}>  {{ item.option2 }}</li></label>
-                                                <label style="{% if answer == item.option3 %} backdrop-filter: blur(15px) saturate(75%);
+                                                border-radius: 12px; {% endif %}"
+                        ><li>
+                          <input type="radio" name="q{{ item.id }}" value="{{
+                          item.option2 }}" {% if answer == item.option2 %}
+                          background-color: green; checked {% endif %}> {{
+                          item.option2 }}
+                        </li></label
+                      >
+                      <label
+                        style="{% if answer == item.option3 %} backdrop-filter: blur(15px) saturate(75%);
                                                 background-color: rgb(105 96 96 / 44%);
-                                                border-radius: 12px; {% endif %}"><li><input type="radio" name="q{{ item.id }}" value="{{ item.option3 }}"  {% if answer == item.option3 %} background-color: green; checked {% endif %}>  {{ item.option3 }}</li></label>
-                                                <!-- <label style="{% if answer == item.option4 %} backdrop-filter: blur(15px) saturate(75%);
+                                                border-radius: 12px; {% endif %}"
+                        ><li>
+                          <input type="radio" name="q{{ item.id }}" value="{{
+                          item.option3 }}" {% if answer == item.option3 %}
+                          background-color: green; checked {% endif %}> {{
+                          item.option3 }}
+                        </li></label
+                      >
+                      <!-- <label style="{% if answer == item.option4 %} backdrop-filter: blur(15px) saturate(75%);
                                                 background-color: rgb(105 96 96 / 44%);
                                                 border-radius: 12px; {% endif %}"><li><input type="radio" name="q{{ item.id }}" value="{{ item.option4 }}" onclick="document.getElementById('myForm').submit(); event.preventDefault();" {% if answer == item.option4 %} background-color: green; checked {% endif %}>  {{ item.option4 }}</li></label> -->
-                                                <label style="{% if answer == item.option4 %} backdrop-filter: blur(15px) saturate(75%);
-                                                background-color: rgb(105 96 96 / 44%);border-radius: 12px; {% endif %}"><li><input type="radio" name="q{{ item.id }}" value="{{ item.option4 }}" {% if answer == item.option4 %} checked {% endif %}>{{ item.option4 }}</li>
-                                            </label>
-                                            </ul>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    <div id="bottom-nav">
-                                            {% if data.has_previous %}
-                                                <a href="?page={{ data.previous_page_number }}" style="float:left;" id="prev-link">
-                                                    <i class="fa-solid fa-chevron-left fa-beat" style="color: #fff;"></i> Previous
-                                                </a>
-                                            {% endif %}
-                                            {% if data.has_next %}
-                                                <a href="?page={{ data.next_page_number }}" id="next-link" style="float:right;">
-                                                    Next Question <i class="fa-solid fa-chevron-right fa-beat" style="color: #fff;"></i>
-                                                </a>
-                                            {% else %}
-                                                <button type="button" class="btn end-test" id="submit-end" style="float:right;">Submit & End Test</button>
-                                            {% endif %}
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-4 px-0">
-                            <div class="vl"></div>
-                            <p>
-                                Camera Portal 
-                                <code>#content</code>.
-                            </p>
-                        </div>
-                    </div>
+                      <label
+                        style="{% if answer == item.option4 %} backdrop-filter: blur(15px) saturate(75%);
+                                                background-color: rgb(105 96 96 / 44%);border-radius: 12px; {% endif %}"
+                        ><li>
+                          <input type="radio" name="q{{ item.id }}" value="{{
+                          item.option4 }}" {% if answer == item.option4 %}
+                          checked {% endif %}>{{ item.option4 }}
+                        </li>
+                      </label>
+                    </ul>
+                  </div>
+                  {% endfor %}
                 </div>
+                <div id="bottom-nav">
+                  {% if data.has_previous %}
+                  <a
+                    href="?page={{ data.previous_page_number }}"
+                    style="float: left"
+                    id="prev-link"
+                  >
+                    <i
+                      class="fa-solid fa-chevron-left fa-beat"
+                      style="color: #fff"
+                    ></i>
+                    Previous
+                  </a>
+                  {% endif %} {% if data.has_next %}
+                  <a
+                    href="?page={{ data.next_page_number }}"
+                    id="next-link"
+                    style="float: right"
+                  >
+                    Next Question
+                    <i
+                      class="fa-solid fa-chevron-right fa-beat"
+                      style="color: #fff"
+                    ></i>
+                  </a>
+                  {% else %}
+                  <button
+                    type="button"
+                    class="btn end-test"
+                    id="submit-end"
+                    style="float: right"
+                  >
+                    Submit & End Test
+                  </button>
+                  {% endif %}
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-4 px-0">
+            <div class="vl"></div>
+            <p>
+              Camera Portal
+              <code>#content</code>.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-    <script type="text/javascript">
+  </div>
+  <script type="text/javascript">
     //     var radioButtons = document.querySelectorAll('input[type="radio"]');
     //     radioButtons.forEach(function(radioButton) {
     //     radioButton.addEventListener('click', function(event) {
@@ -178,17 +272,15 @@
     //     xhr.send(formData);
     // }
 
-    
-    $(document).ready(function() {
-        // Attach a click event to the radio buttons
-        $('input[type="radio"]').on('click', function(event) {
-            event.preventDefault(); // Prevent default radio button behavior
-            $('#myForm').submit(); // Submit the form using AJAX
-        });
+    $(document).ready(function () {
+      // Attach a click event to the radio buttons
+      $('input[type="radio"]').on("click", function (event) {
+        event.preventDefault(); // Prevent default radio button behavior
+        $("#myForm").submit(); // Submit the form using AJAX
+      });
     });
+  </script>
 
-</script>
-    
-    <script src="{% static 'js/exam.js' %}"></script>
+  <script src="{% static 'js/exam.js' %}"></script>
 </body>
 {% endblock content %}
